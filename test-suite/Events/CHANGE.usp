@@ -1,0 +1,22 @@
+#SYMBOL_NAME "Test_CHANGE"
+#DEFAULT_VOLATILE
+
+STRING_INPUT some_data$[100];
+ANALOG_OUTPUT level;
+
+CHANGE some_data$
+{
+level=48;
+}
+ANALOG_INPUT ThingsToAdd[20];
+ANALOG_OUTPUT Sum;
+INTEGER I, Total;
+
+CHANGE ThingsToAdd
+{
+Total=0;
+FOR(I=0 to 20)
+if (isSignalDefined (ThingsToAdd[I]))
+Total = Total + ThingsToAdd[I];
+Sum = Total;
+}

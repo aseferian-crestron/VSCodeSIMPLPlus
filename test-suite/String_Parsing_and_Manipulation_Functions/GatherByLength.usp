@@ -1,0 +1,22 @@
+#SYMBOL_NAME "Test_GatherByLength"
+#DEFAULT_VOLATILE
+
+#DEFINE_CONSTANT GATHER_TIMEOUT 200
+
+BUFFER_INPUT MyLengthString[1000];
+
+CHANGE MyLengthString
+{
+    STRING LocalString[256];
+    WHILE (1)
+    {
+        LocalString = GatherByLength(20, MyLengthString, GATHER_TIMEOUT);
+        IF (Len(LocalString) = 0)
+        {
+            ClearBuffer(MyLengthString);
+            Print("Timeout in length string\n");
+            BREAK;
+        }
+        Print("Received %d bytes\n", Len(LocalString));
+    }
+}

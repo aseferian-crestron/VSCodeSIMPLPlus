@@ -1,0 +1,16 @@
+#SYMBOL_NAME "Test_StopRamp"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT TerminateFade;
+ANALOG_OUTPUT LightLevel[20];
+PUSH TerminateFade
+{
+SIGNED_INTEGER status;
+
+if(IsSignalDefined(LightLevel[1]))
+{
+status = StopRamp(LightLevel[1]);
+if(status < 0)
+GenerateUserWarning("Error stopping ramping process, status = %d", status);
+}
+}

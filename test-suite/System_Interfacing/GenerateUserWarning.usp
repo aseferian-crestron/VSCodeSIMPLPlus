@@ -1,0 +1,9 @@
+#SYMBOL_NAME "Test_GenerateUserWarning"
+#DEFAULT_VOLATILE
+
+FUNCTION Main()
+{
+    STRING sWarning[100];
+    sWarning = "Battery";
+    GenerateUserWarning("The %s level is low", sWarning);
+}

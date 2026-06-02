@@ -1,0 +1,11 @@
+#SYMBOL_NAME "Test_Delay"
+#DEFAULT_VOLATILE
+
+#define_constant MY_DELAY 525
+
+FUNCTION Main()
+{
+    // A delay of 525 hundredths of a second or 5.25 seconds
+    
+    DELAY(MY_DELAY);
+}

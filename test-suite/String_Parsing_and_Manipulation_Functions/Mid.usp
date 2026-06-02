@@ -1,0 +1,12 @@
+#SYMBOL_NAME "Test_Mid"
+#DEFAULT_VOLATILE
+
+STRING_INPUT Var$[100];
+STRING Temp$[100];
+
+CHANGE Var$
+{
+Temp$ = MID(Var$, 2, 5);
+PRINT("String starting at position 2 for 5 characters is %s\n",
+Temp$);
+}

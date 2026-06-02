@@ -1,0 +1,122 @@
+/*******************************************************************************************
+  SIMPL+ Module
+  Sample SIMPL+ file for testing VS Code syntax highlighting
+*******************************************************************************************/
+
+#SYMBOL_NAME "SampleModule"
+#CATEGORY "0"
+#DEFAULT_VOLATILE
+#ENABLE_STACK_CHECKING
+#DEFINE_CONSTANT MAX_VOLUME 100
+#DEFINE_CONSTANT MIN_VOLUME 0
+
+// ---- Inputs ----
+DIGITAL_INPUT Power_Toggle;
+DIGITAL_INPUT Volume_Up;
+DIGITAL_INPUT Volume_Down;
+ANALOG_INPUT  Volume_Set;
+STRING_INPUT  Command_In[256];
+
+// ---- Outputs ----
+DIGITAL_OUTPUT Power_Fb;
+ANALOG_OUTPUT  Volume_Fb;
+STRING_OUTPUT  Command_Out;
+
+// ---- Global Variables ----
+INTEGER gPowerState;
+INTEGER gVolume;
+STRING  gLastCommand[256];
+
+// ---- Structure Example ----
+STRUCTURE DeviceState
+{
+    INTEGER Power;
+    INTEGER Volume;
+    STRING  Name[64];
+};
+
+DeviceState gDevice;
+
+// ---- Functions ----
+
+FUNCTION SetVolume(INTEGER level)
+{
+    IF (level > MAX_VOLUME)
+        level = MAX_VOLUME;
+    ELSE IF (level < MIN_VOLUME)
+        level = MIN_VOLUME;
+
+    gVolume = level;
+    Volume_Fb = gVolume;
+    Print("Volume set to %d\n", gVolume);
+}
+
+FUNCTION SendCommand(STRING cmd)
+{
+    MakeString(gLastCommand, "%s\x0D", cmd);
+    Command_Out = gLastCommand;
+}
+
+// ---- Event Handlers ----
+
+PUSH Power_Toggle
+{
+    IF (gPowerState = FALSE)
+    {
+        gPowerState = TRUE;
+        Power_Fb = 1;
+        SendCommand("POWON");
+    }
+    ELSE
+    {
+        gPowerState = FALSE;
+        Power_Fb = 0;
+        SendCommand("POWOFF");
+    }
+}
+
+PUSH Volume_Up
+{
+    SetVolume(gVolume + 5);
+}
+
+PUSH Volume_Down
+{
+    SetVolume(gVolume - 5);
+}
+
+CHANGE Volume_Set
+{
+    SetVolume(Volume_Set);
+}
+
+CHANGE Command_In
+{
+    INTEGER i;
+    STRING token[64];
+
+    FOR (i = 1 TO 10)
+    {
+        token = Left(Command_In, Find(" ", Command_In) - 1);
+        IF (Len(token) = 0)
+            BREAK;
+        Print("Token %d: %s\n", i, token);
+    }
+}
+
+// ---- Startup ----
+
+FUNCTION Main()
+{
+    gPowerState = FALSE;
+    gVolume     = 50;
+    gDevice.Power  = 0;
+    gDevice.Volume = 50;
+    gDevice.Name   = "Sample Device";
+
+    WAIT (100, InitDelay)
+    {
+        Print("Module initialized: %s\n", gDevice.Name);
+        SetVolume(gDevice.Volume);
+    }
+}

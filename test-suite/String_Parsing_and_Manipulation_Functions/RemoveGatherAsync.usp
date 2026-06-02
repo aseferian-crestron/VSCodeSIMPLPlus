@@ -1,0 +1,10 @@
+#SYMBOL_NAME "Test_RemoveGatherAsync"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT StopGather;
+BUFFER_INPUT MyInput[256];
+
+PUSH StopGather
+{
+RemoveGatherAsync(MyInput);
+}

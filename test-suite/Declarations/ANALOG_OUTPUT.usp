@@ -1,0 +1,10 @@
+#SYMBOL_NAME "Test_ANALOG_OUTPUT"
+#DEFAULT_VOLATILE
+// ANALOG_OUTPUT: ANALOG_OUTPUT <var1>[,<var2>...];
+
+DIGITAL_INPUT _SKIP_,Test_DIn;
+
+PUSH Test_DIn
+{
+    Print("directive test\n");
+}

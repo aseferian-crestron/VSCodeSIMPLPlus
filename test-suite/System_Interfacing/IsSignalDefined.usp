@@ -1,0 +1,12 @@
+#SYMBOL_NAME "Test_IsSignalDefined"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT INS[20];
+INTEGER NumInputs;
+
+FUNCTION MAIN()
+{
+FOR(NumInputs = 20 to 1 Step -1)
+IF(IsSignalDefined(INS[NumInputs]))
+Break;
+}

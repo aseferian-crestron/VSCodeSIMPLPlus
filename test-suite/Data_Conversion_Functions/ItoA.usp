@@ -1,0 +1,11 @@
+#SYMBOL_NAME "Test_ItoA"
+#DEFAULT_VOLATILE
+
+STRING_OUTPUT Code$;
+ANALOG_INPUT VALUE;
+
+CHANGE VALUE
+{
+    Code$ = ITOA(VALUE);
+    PRINT("Code$ = %s\n", ITOA(VALUE));
+}

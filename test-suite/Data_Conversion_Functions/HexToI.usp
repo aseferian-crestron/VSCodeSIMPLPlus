@@ -1,0 +1,19 @@
+#SYMBOL_NAME "Test_HexToI"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT  _SKIP_,Test_DIn;
+ANALOG_INPUT   _SKIP_,Test_AIn;
+STRING_INPUT   _SKIP_,Test_SIn[256];
+BUFFER_INPUT   _SKIP_,Test_BufIn[256];
+DIGITAL_OUTPUT _SKIP_,Test_DOut;
+ANALOG_OUTPUT  _SKIP_,Test_AOut;
+STRING_OUTPUT  _SKIP_,Test_SOut;
+
+FUNCTION Main()
+{
+    INTEGER V1, V2;
+    
+    V1 = HexToI("ABCD");
+    V2 = HexToI("ABCDE"); // Only BCDE will be in the conversion.
+    PRINT("V1=%u, V2=%u\n", V1, V2);
+}

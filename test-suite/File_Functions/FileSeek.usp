@@ -1,0 +1,17 @@
+#SYMBOL_NAME "Test_FileSeek"
+#DEFAULT_VOLATILE
+
+FUNCTION Main()
+{
+    SIGNED_INTEGER nFileHandle;
+    StartFileOperations();
+    nFileHandle = FileOpen("\\CF0\\MyFile", _O_RDONLY | _O_TEXT);
+    IF (nFileHandle >= 0)
+    {
+        IF (FileSeek(nFileHandle, 0, SEEK_SET) < 0)
+            PRINT("Error seeking file\n");
+        IF (FileClose(nFileHandle) <> 0)
+            PRINT("Error closing file\n");
+    }
+    EndFileOperations();
+}

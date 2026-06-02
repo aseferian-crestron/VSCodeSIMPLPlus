@@ -1,0 +1,28 @@
+#SYMBOL_NAME "Test_WriteLongIntegerArray"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT  _SKIP_,Test_DIn;
+ANALOG_INPUT   _SKIP_,Test_AIn;
+STRING_INPUT   _SKIP_,Test_SIn[256];
+BUFFER_INPUT   _SKIP_,Test_BufIn[256];
+DIGITAL_OUTPUT _SKIP_,Test_DOut;
+ANALOG_OUTPUT  _SKIP_,Test_AOut;
+STRING_OUTPUT  _SKIP_,Test_SOut;
+
+FUNCTION Main()
+{
+    INTEGER nFileHandle, iErrorCode;
+    LONG_INTEGER ilArray[10];
+    
+    StartFileOperations();
+    nFileHandle = FileOpen ( "\\CF0\\MyFile", _O_WRONLY );
+    IF (nFileHandle >= 0)
+    {
+    iErrorCode = WriteLongIntegerArray(nFileHandle, ilArray);
+    if (iErrorCode > 0)
+    PRINT ( "Array written to file correctly.\n");
+    else
+    PRINT ( "Error code %d\n", iErrorCode);
+    }
+    EndFileOperations();
+}

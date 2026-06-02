@@ -1,0 +1,9 @@
+#SYMBOL_NAME "Test_High"
+#DEFAULT_VOLATILE
+
+ANALOG_INPUT VALUE;
+
+CHANGE VALUE
+{
+PRINT("The upper byte of %X is %X\n", VALUE, HIGH(VALUE));
+}

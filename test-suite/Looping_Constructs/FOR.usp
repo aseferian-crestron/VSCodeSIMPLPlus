@@ -1,0 +1,16 @@
+#SYMBOL_NAME "Test_FOR"
+#DEFAULT_VOLATILE
+
+STRING_INPUT IN$[100];
+
+FUNCTION Main()
+{
+    INTEGER X;
+    
+    FOR (X = 1 TO LEN(IN$))
+    
+    {
+    PRINT("Character %d of String %s is %s\n", X, IN$,
+    MID(IN$, X, 1));
+    }
+}

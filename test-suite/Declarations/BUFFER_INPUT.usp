@@ -1,0 +1,10 @@
+#SYMBOL_NAME "Test_BUFFER_INPUT"
+#DEFAULT_VOLATILE
+// BUFFER_INPUT: BUFFER_INPUT <var1[max_length]>[,<var2[max_length]>...];
+
+DIGITAL_INPUT _SKIP_,Test_DIn;
+
+PUSH Test_DIn
+{
+    Print("directive test\n");
+}

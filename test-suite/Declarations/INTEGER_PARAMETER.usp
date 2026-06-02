@@ -1,0 +1,10 @@
+#SYMBOL_NAME "Test_INTEGER_PARAMETER"
+#DEFAULT_VOLATILE
+// INTEGER_PARAMETER: INTEGER_PARAMETER <var1>[,<var2>...];
+
+DIGITAL_INPUT _SKIP_,Test_DIn;
+
+PUSH Test_DIn
+{
+    Print("directive test\n");
+}

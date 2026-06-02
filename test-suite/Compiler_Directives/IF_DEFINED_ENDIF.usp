@@ -1,0 +1,13 @@
+#SYMBOL_NAME "Test_IF_DEFINED_ENDIF"
+#DEFAULT_VOLATILE
+#DEFINE_CONSTANT MY_CONST 1
+#IF_DEFINED MY_CONST
+// compiled when MY_CONST is defined
+#ENDIF
+
+DIGITAL_INPUT _SKIP_,Test_DIn;
+
+PUSH Test_DIn
+{
+    Print("directive test\n");
+}

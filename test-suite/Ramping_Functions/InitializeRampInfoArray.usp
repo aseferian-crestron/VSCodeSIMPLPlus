@@ -1,0 +1,22 @@
+#SYMBOL_NAME "Test_InitializeRampInfoArray"
+#DEFAULT_VOLATILE
+
+ANALOG_INPUT InputLevel;
+ANALOG_OUTPUT OutputLevel;
+RAMP_INFO InputRampInfo, OutputRampInfo;
+Change InputLevel
+{
+if(IsRamping(InputLevel))
+{
+if(CompareRampsByAttribute(InputLevel, InputRampInfo)=0)
+{
+GetRampInfo(InputLevel, InputRampInfo);
+CreateRamp(OutputLevel, InputRampInfo);
+}
+}
+else
+{
+OutputLevel = InputLevel;
+InitializeRampInfo(InputRampInfo);
+}
+}

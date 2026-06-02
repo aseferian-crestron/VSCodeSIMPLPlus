@@ -1,0 +1,12 @@
+#SYMBOL_NAME "Test_Gather"
+#DEFAULT_VOLATILE
+
+BUFFER_INPUT COM$[100];
+DIGITAL_INPUT trig;
+STRING IN$[100];
+
+CHANGE COM$
+{
+IN$ = GATHER("\n", COM$);
+PRINT("The value of IN$ is %s\n", IN$);
+}

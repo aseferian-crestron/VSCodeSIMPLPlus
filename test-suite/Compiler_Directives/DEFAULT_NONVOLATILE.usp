@@ -1,0 +1,9 @@
+#SYMBOL_NAME "Test_DEFAULT_NONVOLATILE"
+#DEFAULT_NONVOLATILE
+
+DIGITAL_INPUT _SKIP_,Test_DIn;
+
+PUSH Test_DIn
+{
+    Print("directive test\n");
+}

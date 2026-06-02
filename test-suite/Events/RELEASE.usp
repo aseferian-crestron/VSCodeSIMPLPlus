@@ -1,0 +1,10 @@
+#SYMBOL_NAME "Test_RELEASE"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT trigger;
+STRING_OUTPUT output$;
+
+RELEASE trigger
+{
+output$ = "Hello, World!";
+}

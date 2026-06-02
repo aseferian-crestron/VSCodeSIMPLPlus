@@ -1,0 +1,12 @@
+#SYMBOL_NAME "ErrorTest"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT Test_In;
+
+PUSH Test_In
+{
+    INTEGER x;
+    x = UndefinedFunction(42);
+    IF x > 10
+        Print("bad syntax here\n"
+}

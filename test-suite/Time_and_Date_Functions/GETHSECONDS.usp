@@ -1,0 +1,15 @@
+#SYMBOL_NAME "Test_GETHSECONDS"
+#DEFAULT_VOLATILE
+
+FUNCTION Main()
+{
+    INTEGER OldTime, NewTime, Loop;
+    Loop = 0;
+    OldTime = GETHSECONDS();
+    WHILE (Loop < 10000)
+    {
+        Loop = Loop + 1;
+    }
+    NewTime = GETHSECONDS();
+    PRINT("10000 iterations took %d hundredths of a second\n", NewTime - OldTime);
+}

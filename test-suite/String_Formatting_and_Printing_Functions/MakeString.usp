@@ -1,0 +1,15 @@
+#SYMBOL_NAME "Test_MakeString"
+#DEFAULT_VOLATILE
+
+INTEGER X;
+STRING Z[100], OUT[100];
+
+FUNCTION MAIN()
+{
+    X = 10;
+    Z = "Hello";
+    MAKESTRING(OUT, "This is string\n");
+    MAKESTRING(OUT, "Value of X is %u decimal, %02X hex\n", X, X);
+    MAKESTRING(OUT, "String value is %s\n", Z);
+    PRINT("%s", OUT);
+}

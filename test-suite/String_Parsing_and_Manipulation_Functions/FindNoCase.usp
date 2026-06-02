@@ -1,0 +1,12 @@
+#SYMBOL_NAME "Test_FindNoCase"
+#DEFAULT_VOLATILE
+
+STRING_INPUT IN$[100];
+INTEGER START_LOC;
+
+CHANGE IN$
+{
+START_LOC = FINDNOCASE("XYZ", IN$);
+PRINT("XYZ was found starting at position %d in %s\n",
+START_LOC, IN$);
+}

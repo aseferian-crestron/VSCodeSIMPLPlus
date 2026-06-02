@@ -1,0 +1,20 @@
+#SYMBOL_NAME "Test_CancelAllWait"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT Trig, KillWaits;
+
+PUSH Trig
+{
+WAIT(1000, FirstWait)
+{
+PRINT("Wait 1 Triggered!\n");
+}
+WAIT(2000, SecondWait)
+{
+PRINT("Wait 2 Triggered!\n");
+}
+}
+PUSH KillWaits
+{
+CancelAllWait();
+}

@@ -1,0 +1,29 @@
+#SYMBOL_NAME "Test_FileDate"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT  _SKIP_,Test_DIn;
+ANALOG_INPUT   _SKIP_,Test_AIn;
+STRING_INPUT   _SKIP_,Test_SIn[256];
+BUFFER_INPUT   _SKIP_,Test_BufIn[256];
+DIGITAL_OUTPUT _SKIP_,Test_DOut;
+ANALOG_OUTPUT  _SKIP_,Test_AOut;
+STRING_OUTPUT  _SKIP_,Test_SOut;
+
+FUNCTION Main()
+{
+    STRING TheDate$[100];
+    
+    FILE_INFO FileInfo;
+    SIGNED_INTEGER Found;
+    StartFileOperations();
+    Found = FindFirst("*.dat", FileInfo );
+    WHILE (Found = 0)
+    {
+    TheDate$ = FileDate(FileInfo, 1);
+    PRINT ( "Date of file = %s\n", TheDate$ );
+    Found = FindNext(FileInfo);
+    }
+    IF ( FindClose() < 0 )
+    PRINT ( "Error in closing find operation\n" );
+    EndFileOperations();
+}

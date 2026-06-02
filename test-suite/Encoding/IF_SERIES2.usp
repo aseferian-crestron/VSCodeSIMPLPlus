@@ -1,0 +1,34 @@
+#SYMBOL_NAME "Test_IF_SERIES2"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT  _SKIP_,Test_DIn;
+ANALOG_INPUT   _SKIP_,Test_AIn;
+STRING_INPUT   _SKIP_,Test_SIn[256];
+BUFFER_INPUT   _SKIP_,Test_BufIn[256];
+DIGITAL_OUTPUT _SKIP_,Test_DOut;
+ANALOG_OUTPUT  _SKIP_,Test_AOut;
+STRING_OUTPUT  _SKIP_,Test_SOut;
+
+#IF_SERIES2
+Function FunctionOne()
+{
+}
+#ENDIF
+
+#IF_SERIES2
+Function FunctionTwo()
+{
+}
+#ELSE
+Function FunctionThree()
+{
+}
+#ENDIF
+Function FunctionFour()
+{
+#IF_SERIES2
+// some code
+#ELSE
+// some other code
+#ENDIF
+}

@@ -1,0 +1,11 @@
+#SYMBOL_NAME "Test_Atoi"
+#DEFAULT_VOLATILE
+
+STRING_INPUT IN$[100];
+INTEGER VAL;
+
+CHANGE IN$
+{
+VAL = ATOI(IN$);
+PRINT("Value of %s after ATOI is %d\n", IN$, VAL);
+}

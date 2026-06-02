@@ -1,0 +1,21 @@
+#SYMBOL_NAME "Test_SetEncoding"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT  _SKIP_,Test_DIn;
+ANALOG_INPUT   _SKIP_,Test_AIn;
+STRING_INPUT   _SKIP_,Test_SIn[256];
+BUFFER_INPUT   _SKIP_,Test_BufIn[256];
+DIGITAL_OUTPUT _SKIP_,Test_DOut;
+ANALOG_OUTPUT  _SKIP_,Test_AOut;
+STRING_OUTPUT  _SKIP_,Test_SOut;
+
+Function SetEncodingFunction()
+{
+STRING myString[10];
+// Set encoding to ASCII
+setencoding(myString, ENCODING_ASCII);
+// Set encoding to UTF16
+setencoding(myString, ENCODING_UTF16);
+// Set encoding to default encoding inherited using the encoding directive.
+setencoding(myString, ENCODING_INHERIT);
+}

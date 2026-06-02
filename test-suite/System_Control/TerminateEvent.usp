@@ -1,0 +1,25 @@
+#SYMBOL_NAME "Test_TerminateEvent"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT  _SKIP_,Test_DIn;
+ANALOG_INPUT   _SKIP_,Test_AIn;
+STRING_INPUT   _SKIP_,Test_SIn[256];
+BUFFER_INPUT   _SKIP_,Test_BufIn[256];
+DIGITAL_OUTPUT _SKIP_,Test_DOut;
+ANALOG_OUTPUT  _SKIP_,Test_AOut;
+STRING_OUTPUT  _SKIP_,Test_SOut;
+
+INTEGER X;
+ANALOG_INPUT Y;
+
+CHANGE Y
+{
+X=0;
+WHILE(X<25)
+{
+IF(Y = 69)
+TerminateEvent;
+X = X + 1;
+PRINT("X=%d\n", X);
+}
+}

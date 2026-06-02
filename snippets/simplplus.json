@@ -1,0 +1,253 @@
+{
+  "SIMPL+ Module Header": {
+    "prefix": "header",
+    "body": [
+      "#SYMBOL_NAME \"${1:ModuleName}\"",
+      "#CATEGORY \"${2:0}\" // ${3:Miscellaneous}",
+      "#DEFAULT_VOLATILE",
+      "#ENABLE_STACK_CHECKING",
+      "",
+      "/*",
+      " * Module:  ${1:ModuleName}",
+      " * Author:  ${4:Author}",
+      " * Date:    ${5:YYYY-MM-DD}",
+      " * Notes:   ${6:Description}",
+      " */",
+      "",
+      "// ---- Inputs ----",
+      "$0",
+      "",
+      "// ---- Outputs ----",
+      "",
+      "// ---- Parameters ----",
+      "",
+      "// ---- Functions ----"
+    ],
+    "description": "Standard SIMPL+ module header"
+  },
+  "Digital Input": {
+    "prefix": "din",
+    "body": "DIGITAL_INPUT ${1:InputName};",
+    "description": "Digital input declaration"
+  },
+  "Analog Input": {
+    "prefix": "ain",
+    "body": "ANALOG_INPUT ${1:InputName};",
+    "description": "Analog input declaration"
+  },
+  "String Input": {
+    "prefix": "sin",
+    "body": "STRING_INPUT ${1:InputName}[${2:256}];",
+    "description": "String input declaration"
+  },
+  "Buffer Input": {
+    "prefix": "bin",
+    "body": "BUFFER_INPUT ${1:InputName}[${2:256}];",
+    "description": "Buffer input declaration"
+  },
+  "Digital Output": {
+    "prefix": "dout",
+    "body": "DIGITAL_OUTPUT ${1:OutputName};",
+    "description": "Digital output declaration"
+  },
+  "Analog Output": {
+    "prefix": "aout",
+    "body": "ANALOG_OUTPUT ${1:OutputName};",
+    "description": "Analog output declaration"
+  },
+  "String Output": {
+    "prefix": "sout",
+    "body": "STRING_OUTPUT ${1:OutputName};",
+    "description": "String output declaration"
+  },
+  "Function": {
+    "prefix": "func",
+    "body": [
+      "FUNCTION ${1:FunctionName}(${2:})",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "Function definition"
+  },
+  "Threadsafe Function": {
+    "prefix": "tfunc",
+    "body": [
+      "THREADSAFE FUNCTION ${1:FunctionName}(${2:})",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "Threadsafe function definition"
+  },
+  "Push Handler": {
+    "prefix": "push",
+    "body": [
+      "PUSH ${1:InputName}",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "PUSH event handler"
+  },
+  "Release Handler": {
+    "prefix": "release",
+    "body": [
+      "RELEASE ${1:InputName}",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "RELEASE event handler"
+  },
+  "Change Handler": {
+    "prefix": "change",
+    "body": [
+      "CHANGE ${1:InputName}",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "CHANGE event handler"
+  },
+  "Event Handler": {
+    "prefix": "event",
+    "body": [
+      "EVENT",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "EVENT handler"
+  },
+  "If Statement": {
+    "prefix": "if",
+    "body": [
+      "IF (${1:condition})",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "If statement"
+  },
+  "If-Else Statement": {
+    "prefix": "ife",
+    "body": [
+      "IF (${1:condition})",
+      "{",
+      "\t$2",
+      "}",
+      "ELSE",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "If-else statement"
+  },
+  "While Loop": {
+    "prefix": "while",
+    "body": [
+      "WHILE (${1:condition})",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "While loop"
+  },
+  "For Loop": {
+    "prefix": "for",
+    "body": [
+      "FOR (${1:i} = ${2:1} TO ${3:10})",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "For loop"
+  },
+  "Do-Until Loop": {
+    "prefix": "do",
+    "body": [
+      "DO",
+      "{",
+      "\t$0",
+      "}",
+      "UNTIL (${1:condition});"
+    ],
+    "description": "Do-Until loop"
+  },
+  "Switch Statement": {
+    "prefix": "switch",
+    "body": [
+      "SWITCH (${1:expression})",
+      "{",
+      "\tCASE (${2:1}):",
+      "\t\t$0",
+      "\t\tBREAK;",
+      "\tDEFAULT:",
+      "\t\tBREAK;",
+      "}"
+    ],
+    "description": "Switch statement"
+  },
+  "Structure": {
+    "prefix": "struct",
+    "body": [
+      "STRUCTURE ${1:StructName}",
+      "{",
+      "\t${2:INTEGER} ${3:Member};",
+      "\t$0",
+      "};"
+    ],
+    "description": "Structure definition"
+  },
+  "Wait": {
+    "prefix": "wait",
+    "body": "WAIT (${1:100}, ${2:WaitLabel})\n{\n\t$0\n}",
+    "description": "Timed wait block"
+  },
+  "Pulse": {
+    "prefix": "pulse",
+    "body": "Pulse(${1:100}, ${2:OutputName});",
+    "description": "Pulse an output"
+  },
+  "Print": {
+    "prefix": "print",
+    "body": "Print(\"${1:message}\\n\");",
+    "description": "Print to trace"
+  },
+  "MakeString": {
+    "prefix": "makestr",
+    "body": "MakeString(${1:strVar}, \"${2:format}\", ${3:args});",
+    "description": "MakeString call"
+  },
+  "Define Constant": {
+    "prefix": "const",
+    "body": "#DEFINE_CONSTANT ${1:CONSTANT_NAME} ${2:0}",
+    "description": "Define a constant"
+  },
+  "Integer Variable": {
+    "prefix": "int",
+    "body": "INTEGER ${1:varName};",
+    "description": "Integer variable declaration"
+  },
+  "String Variable": {
+    "prefix": "str",
+    "body": "STRING ${1:varName}[${2:256}];",
+    "description": "String variable declaration"
+  },
+  "Long Integer Variable": {
+    "prefix": "long",
+    "body": "LONG_INTEGER ${1:varName};",
+    "description": "Long integer variable declaration"
+  },
+  "Signed Long Integer Variable": {
+    "prefix": "slong",
+    "body": "SIGNED_LONG_INTEGER ${1:varName};",
+    "description": "Signed long integer variable declaration"
+  },
+  "SimplSharp Library": {
+    "prefix": "lib",
+    "body": "#USER_SIMPLSHARP_LIBRARY \"${1:LibraryName}\"",
+    "description": "Reference a SimplSharp library"
+  }
+}

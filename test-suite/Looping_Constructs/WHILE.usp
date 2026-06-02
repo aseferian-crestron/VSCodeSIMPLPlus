@@ -1,0 +1,22 @@
+#SYMBOL_NAME "Test_WHILE"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT  _SKIP_,Test_DIn;
+ANALOG_INPUT   _SKIP_,Test_AIn;
+STRING_INPUT   _SKIP_,Test_SIn[256];
+BUFFER_INPUT   _SKIP_,Test_BufIn[256];
+DIGITAL_OUTPUT _SKIP_,Test_DOut;
+ANALOG_OUTPUT  _SKIP_,Test_AOut;
+STRING_OUTPUT  _SKIP_,Test_SOut;
+
+FUNCTION Main()
+{
+    INTEGER X;
+    
+    X=0;
+    WHILE(X < 25)
+    {
+    X = X + 1;
+    PRINT("X = %d\n", X);
+    }
+}

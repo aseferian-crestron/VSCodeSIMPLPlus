@@ -1,0 +1,127 @@
+{
+  "name": "vscode-simplplus",
+  "displayName": "SIMPL+",
+  "description": "Crestron SIMPL+ language support for Visual Studio Code — syntax highlighting, snippets, and compiler integration",
+  "version": "0.1.0",
+  "publisher": "crestron",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:simplplus"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "simplplus",
+        "aliases": ["SIMPL+", "simplplus", "SIMPL Plus"],
+        "extensions": [".usp", ".ush"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "simplplus",
+        "scopeName": "source.simplplus",
+        "path": "./syntaxes/simplplus.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "simplplus",
+        "path": "./snippets/simplplus.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "simplplus.compile",
+        "title": "Compile Current File",
+        "category": "SIMPL+"
+      },
+      {
+        "command": "simplplus.compileAll",
+        "title": "Compile All Files in Workspace",
+        "category": "SIMPL+"
+      },
+      {
+        "command": "simplplus.runTests",
+        "title": "Run Test Suite (test-suite/)",
+        "category": "SIMPL+"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "simplplus.compile",
+          "when": "resourceLangId == simplplus",
+          "group": "1_modification"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "simplplus.compile",
+          "when": "resourceExtname == .usp || resourceExtname == .ush",
+          "group": "1_modification"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "simplplus.compile",
+        "key": "f12",
+        "when": "resourceLangId == simplplus"
+      },
+      {
+        "command": "simplplus.compileAll",
+        "key": "shift+f12",
+        "when": "resourceLangId == simplplus"
+      }
+    ],
+    "configuration": {
+      "title": "SIMPL+",
+      "properties": {
+        "simplplus.compilerPath": {
+          "type": "string",
+          "default": "C:\\Program Files (x86)\\Crestron\\Simpl\\SPlusCC.exe",
+          "description": "Path to the Crestron SIMPL+ command-line compiler (SPlusCC.exe)"
+        },
+        "simplplus.compileTarget": {
+          "type": "string",
+          "enum": ["series2", "series3", "series2 series3"],
+          "default": "series3",
+          "description": "Target control system series for compilation"
+        },
+        "simplplus.compileOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically compile the active .usp file when saved"
+        }
+      }
+    },
+    "taskDefinitions": [
+      {
+        "type": "simplplus",
+        "properties": {
+          "file": {
+            "type": "string",
+            "description": "The .usp file to compile"
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.75.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,10 @@
+#SYMBOL_NAME "Test_ENABLE_DYNAMIC"
+#DEFAULT_VOLATILE
+#ENABLE_DYNAMIC
+
+DIGITAL_INPUT _SKIP_,Test_DIn;
+
+PUSH Test_DIn
+{
+    Print("directive test\n");
+}

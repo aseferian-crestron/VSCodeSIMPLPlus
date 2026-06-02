@@ -1,0 +1,11 @@
+#SYMBOL_NAME "Test_Right"
+#DEFAULT_VOLATILE
+
+STRING_INPUT Var$[100];
+STRING Temp$[100];
+
+CHANGE Var$
+{
+    Temp$ = RIGHT(Var$, 5);
+    PRINT("Right most 5 chars of %s are %s\n", Var$, Temp$);
+}

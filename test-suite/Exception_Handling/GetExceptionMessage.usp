@@ -1,0 +1,21 @@
+#SYMBOL_NAME "Test_GetExceptionMessage"
+#DEFAULT_VOLATILE
+
+FUNCTION MyFunc(INTEGER index)
+{
+    INTEGER intArr[10];
+    TRY
+    {
+        intArr[index] = 1;
+        Print("Array index set\n");
+    }
+    CATCH
+    {
+        Print("Exception: %s\n", GetExceptionMessage());
+    }
+}
+
+FUNCTION Main()
+{
+    MyFunc(11);
+}

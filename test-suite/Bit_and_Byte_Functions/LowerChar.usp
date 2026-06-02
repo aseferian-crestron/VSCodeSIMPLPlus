@@ -1,0 +1,19 @@
+#SYMBOL_NAME "Test_LowerChar"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT  _SKIP_,Test_DIn;
+ANALOG_INPUT   _SKIP_,Test_AIn;
+STRING_INPUT   _SKIP_,Test_SIn[256];
+BUFFER_INPUT   _SKIP_,Test_BufIn[256];
+DIGITAL_OUTPUT _SKIP_,Test_DOut;
+ANALOG_OUTPUT  _SKIP_,Test_AOut;
+STRING_OUTPUT  _SKIP_,Test_SOut;
+
+FUNCTION Main()
+{
+    INTEGER Converted1, Converted2;
+    
+    Converted1 = LowerChar('a');
+    Converted2 = LowerChar('5');
+    Print("Converted1=%c, Converted2=%c\n", Converted1, Converted2);
+}

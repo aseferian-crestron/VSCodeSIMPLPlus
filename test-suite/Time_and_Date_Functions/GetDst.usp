@@ -1,0 +1,23 @@
+#SYMBOL_NAME "Test_GetDst"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT  _SKIP_,Test_DIn;
+ANALOG_INPUT   _SKIP_,Test_AIn;
+STRING_INPUT   _SKIP_,Test_SIn[256];
+BUFFER_INPUT   _SKIP_,Test_BufIn[256];
+DIGITAL_OUTPUT _SKIP_,Test_DOut;
+ANALOG_OUTPUT  _SKIP_,Test_AOut;
+STRING_OUTPUT  _SKIP_,Test_SOut;
+
+FUNCTION Main()
+{
+    INTEGER DstMode;
+    
+    DstMode = GetDst();
+    If(DstMode = 0)
+    Print("DST Mode is currently unknown.\n");
+    Else if (DstMode = 1)
+    Print("DST Mode is currently On (In DST).\n");
+    Else if (DstMode = 2)
+    Print("DST Mode is currently Off (Not in DST).\n");
+}

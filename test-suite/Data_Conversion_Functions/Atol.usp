@@ -1,0 +1,11 @@
+#SYMBOL_NAME "Test_Atol"
+#DEFAULT_VOLATILE
+
+STRING_INPUT IN$[100];
+LONG_INTEGER VAL;
+
+CHANGE IN$
+{
+VAL = ATOL(IN$);
+PRINT("Value of %s after ATOL is %ld\n", IN$, VAL);
+}

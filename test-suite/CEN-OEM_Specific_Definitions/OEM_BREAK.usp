@@ -1,0 +1,10 @@
+#SYMBOL_NAME "Test_OEM_BREAK"
+#DEFAULT_VOLATILE
+// _OEM_BREAK: _OEM_BREAK = <expression>; // Write to Variable
+
+DIGITAL_INPUT _SKIP_,Test_DIn;
+
+PUSH Test_DIn
+{
+    Print("directive test\n");
+}

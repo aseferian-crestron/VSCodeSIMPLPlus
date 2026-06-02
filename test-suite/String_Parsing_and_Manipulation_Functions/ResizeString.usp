@@ -1,0 +1,12 @@
+#SYMBOL_NAME "Test_ResizeString"
+#DEFAULT_VOLATILE
+
+DYNAMIC STRING MyString[10];
+
+FUNCTION Main()
+{
+    SIGNED_INTEGER Status;
+    Status = ResizeString(MyString, 200);
+    IF (Status <> 0)
+        Print("Error resizing MyString\n");
+}

@@ -1,0 +1,12 @@
+#SYMBOL_NAME "Test_HELP_BEGIN_HELP_END"
+#DEFAULT_VOLATILE
+#HELP_BEGIN
+This module does something useful.
+#HELP_END
+
+DIGITAL_INPUT _SKIP_,Test_DIn;
+
+PUSH Test_DIn
+{
+    Print("directive test\n");
+}

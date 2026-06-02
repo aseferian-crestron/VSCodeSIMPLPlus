@@ -1,0 +1,10 @@
+#SYMBOL_NAME "Test_STRING_INPUT"
+#DEFAULT_VOLATILE
+// STRING_INPUT: STRING_INPUT <var1[max_size1]>[,<var2[max_size2]>...];
+
+DIGITAL_INPUT _SKIP_,Test_DIn;
+
+PUSH Test_DIn
+{
+    Print("directive test\n");
+}

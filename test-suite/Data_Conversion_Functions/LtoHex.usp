@@ -1,0 +1,14 @@
+#SYMBOL_NAME "Test_LtoHex"
+#DEFAULT_VOLATILE
+
+STRING_OUTPUT Code$;
+
+FUNCTION Main()
+{
+    LONG_INTEGER VALUE;
+    STRING temp[50];
+    VALUE = 0xDEADBEEF;
+    Code$ = LTOHEX(VALUE);
+    temp = LTOHEX(VALUE);
+    PRINT("Code = %s\n", temp);
+}

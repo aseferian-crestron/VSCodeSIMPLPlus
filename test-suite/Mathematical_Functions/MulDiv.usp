@@ -1,0 +1,11 @@
+#SYMBOL_NAME "Test_MulDiv"
+#DEFAULT_VOLATILE
+
+INTEGER X, Y;
+
+FUNCTION MAIN()
+{
+    X = 1970;
+    Y = 40;
+    PRINT("(%d * %d)/25 = %d\n", X, Y, MULDIV(X, Y, 25));
+}

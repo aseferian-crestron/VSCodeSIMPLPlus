@@ -1,0 +1,74 @@
+#SYMBOL_NAME "Test_CMutex"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT test1,test2;
+
+CMutex myMutex;
+CEvent myEvent;
+
+PUSH test1
+{
+INTEGER retVal;
+
+// By default the mutex is not owned by the callee - Use WaitForMutex to grab the mutex. There is no timeout for the WaitForMutex function
+// Use ReleaseMutex to release the mutex
+// Mutex is used to provide mutual exclusion across two functions. If one thread has the mutex another one cannot
+// We need to release the mutex from within the same thread which obtained the mutex
+print ( " Inside callback for test1 - Try grabbing the mutex \r\n" );
+myMutex. WaitForMutex ();
+print ( " Inside callback for test1 - Obtained mutex. Now waiting now event which will tell us to release the mutex \r\n" );
+
+// Wait for an event to be signaled, then we can then release the mutex
+myEvent. Wait (-1);
+
+print ( " Releasing the mutex now \r\n" );
+myMutex. ReleaseMutex ();
+}
+
+RELEASE test1
+{
+print ( " Setting the event now which will tell the thread to release the mutex \r\n" );
+
+myEvent. Set ();
+}
+
+PUSH test2
+{
+print ( " Inside callback for test2 - Try grabbing the mutex \r\n" );
+myMutex. WaitForMutex ();
+print ( " Inside callback for test2 - Obtained mutex Now waiting now event which will tell us to release the mutex \r\n" );
+
+// Wait for an event to be signaled, then we can then release the mutex
+myEvent. Wait (-1);
+
+print ( " Releasing the mutex now in callback 2\r\n" );
+myMutex. ReleaseMutex ();
+}
+
+RELEASE test2
+{
+try
+{
+print ( " Inside release callback for test2 - Release the mutex \r\n" );
+// Release mutex throws an exception if we are trying to release a mutex which we do not own
+// This will throw an exception
+myMutex. ReleaseMutex ();
+print ( " Inside release callback for test2 - Released the mutex \r\n" );
+}
+catch
+{
+// This is expected since the thread which owns the mutex has to release it
+print ( " Exception thrown %s \r\n" , GetExceptionMessage ());
+
+// Now set the event so that we can release the mutex
+myEvent. Set ();
+}
+}
+
+Function Main()
+{
+WaitForInitializationComplete ();
+
+// Invoke the function - event will be triggered once since it is set on startup
+myEvent.Reset();
+}

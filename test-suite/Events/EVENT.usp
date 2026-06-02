@@ -1,0 +1,11 @@
+#SYMBOL_NAME "Test_EVENT"
+#DEFAULT_VOLATILE
+
+ANALOG_INPUT level1, level2, level3;
+STRING_INPUT extra$[2][20];
+STRING_OUTPUT OUT$;
+
+EVENT
+{
+OUT$=extra$[0]+extra$[1]+CHR(level1)+CHR(level2)+CHR(level3);
+}

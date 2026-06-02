@@ -1,0 +1,11 @@
+#SYMBOL_NAME "Test_Left"
+#DEFAULT_VOLATILE
+
+STRING_INPUT Var$[100];
+STRING Temp$[100];
+
+CHANGE Var$
+{
+Temp$ = LEFT(Var$, 5);
+PRINT("Left most 5 characters of %s are %s\n", Var$, Temp$);
+}

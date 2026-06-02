@@ -1,0 +1,17 @@
+#SYMBOL_NAME "Test_WaitForInitializationComplete"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT diEnable;
+INTEGER giProcessEnabled;
+
+FUNCTION Main()
+{
+    giProcessEnabled = 0;
+    IF (WaitForInitializationComplete() < 0)
+    {
+        Print("Error waiting for initialization\n");
+        RETURN;
+    }
+    Print("Initialization complete\n");
+    giProcessEnabled = 1;
+}

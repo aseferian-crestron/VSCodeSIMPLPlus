@@ -1,0 +1,32 @@
+#SYMBOL_NAME "Test_GetExceptionCode"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT  _SKIP_,Test_DIn;
+ANALOG_INPUT   _SKIP_,Test_AIn;
+STRING_INPUT   _SKIP_,Test_SIn[256];
+BUFFER_INPUT   _SKIP_,Test_BufIn[256];
+DIGITAL_OUTPUT _SKIP_,Test_DOut;
+ANALOG_OUTPUT  _SKIP_,Test_AOut;
+STRING_OUTPUT  _SKIP_,Test_SOut;
+
+Function MyFunc( INTEGER index )
+{
+INTEGER intArr[10];
+TRY
+{
+intArr[index] = 1;
+Print( "array index set" );
+}
+CATCH
+{
+Switch( GetExceptionCode() )
+{
+case (SPLUS_EXCEPTION_OUT_OF_RANGE):
+{
+}
+case (SPLUS_EXCEPTION_UNKNOWN):
+{
+}
+}
+}
+}

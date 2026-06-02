@@ -1,0 +1,12 @@
+#SYMBOL_NAME "Test_CompareStringsNoCase"
+#DEFAULT_VOLATILE
+
+FUNCTION Main()
+{
+    STRING FirstString[100], SecondString[100];
+    SIGNED_INTEGER result;
+    FirstString = "Valuea";
+    SecondString = "Valueb";
+    result = CompareStringsNoCase(FirstString, SecondString);
+    PRINT("CompareStringsNoCase result: %d\n", result);
+}

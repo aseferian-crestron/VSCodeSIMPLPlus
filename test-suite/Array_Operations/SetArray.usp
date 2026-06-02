@@ -1,0 +1,14 @@
+#SYMBOL_NAME "Test_SetArray"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT InitializeArrays;
+INTEGER Levels[10];
+STRING Names[5][5];
+
+PUSH InitializeArrays
+{
+SetArray(Levels, 3);
+SetArray(Levels, "3");
+SetArray(Names, "xyz");
+SetArray(Names, 0x41);
+}

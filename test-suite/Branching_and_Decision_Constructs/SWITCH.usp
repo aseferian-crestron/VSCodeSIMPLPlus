@@ -1,0 +1,27 @@
+#SYMBOL_NAME "Test_SWITCH"
+#DEFAULT_VOLATILE
+
+ANALOG_INPUT AIN;
+
+FUNCTION Main()
+{
+    INTEGER X;
+    
+    SWITCH(AIN)
+    {
+    CASE (2):
+    {
+    X = 0;
+    }
+    CASE (3):
+    {
+    X = AIN;
+    }
+    CASE (5):
+    {
+    X = AIN + 1;
+    }
+    DEFAULT:
+    PRINT("Unknown command %d!\n", AIN);
+    }
+}

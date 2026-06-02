@@ -1,0 +1,5 @@
+Compiling for 3-Series Output: 'C:\ClaudeProjects\VSCodeSIMPL+Plugin\sample\error_test.usp'...
+[C:\ClaudeProjects\VSCodeSIMPL+Plugin\sample\error_test.usp] Error 1001 (Line 1) - Undefined variable: 'UNDEFINEDFUNCTION'
+[C:\ClaudeProjects\VSCodeSIMPL+Plugin\sample\error_test.usp] Error 1002 (Line 2) - Missing '}'
+Total Error(s): 2
+Total Warning(s): 0

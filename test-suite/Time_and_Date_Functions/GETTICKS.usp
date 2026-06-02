@@ -1,0 +1,25 @@
+#SYMBOL_NAME "Test_GETTICKS"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT  _SKIP_,Test_DIn;
+ANALOG_INPUT   _SKIP_,Test_AIn;
+STRING_INPUT   _SKIP_,Test_SIn[256];
+BUFFER_INPUT   _SKIP_,Test_BufIn[256];
+DIGITAL_OUTPUT _SKIP_,Test_DOut;
+ANALOG_OUTPUT  _SKIP_,Test_AOut;
+STRING_OUTPUT  _SKIP_,Test_SOut;
+
+FUNCTION Main()
+{
+    INTEGER OldTime, NewTime, Loop;
+    
+    Loop=0;
+    OldTime=GETTICKS();
+    WHILE(Loop < 10000)
+    {
+    Loop = Loop + 1;
+    }
+    NewTime=GETTICKS();
+    
+    PRINT("Elapsed Time is %d ticks\n", Newtime-OldTime);
+}

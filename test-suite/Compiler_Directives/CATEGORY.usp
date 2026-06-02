@@ -1,0 +1,10 @@
+#SYMBOL_NAME "Test_CATEGORY"
+#DEFAULT_VOLATILE
+#CATEGORY "0"
+
+DIGITAL_INPUT _SKIP_,Test_DIn;
+
+PUSH Test_DIn
+{
+    Print("directive test\n");
+}

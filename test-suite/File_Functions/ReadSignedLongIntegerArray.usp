@@ -1,0 +1,28 @@
+#SYMBOL_NAME "Test_ReadSignedLongIntegerArray"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT  _SKIP_,Test_DIn;
+ANALOG_INPUT   _SKIP_,Test_AIn;
+STRING_INPUT   _SKIP_,Test_SIn[256];
+BUFFER_INPUT   _SKIP_,Test_BufIn[256];
+DIGITAL_OUTPUT _SKIP_,Test_DOut;
+ANALOG_OUTPUT  _SKIP_,Test_AOut;
+STRING_OUTPUT  _SKIP_,Test_SOut;
+
+FUNCTION Main()
+{
+    SIGNED_INTEGER nFileHandle, iErrorCode;
+    SIGNED_LONG_INTEGER sliArray[10][5];
+    
+    StartFileOperations();
+    nFileHandle = FileOpen ( "\\CF0\\MyFile", _O_RDONLY );
+    IF (nFileHandle >= 0)
+    {
+    iErrorCode = ReadSignedLongIntegerArray(nFileHandle, sliArray);
+    if (iErrorCode > 0)
+    PRINT ( "Read array from file correctly.\n");
+    else
+    PRINT ( "Error code %d\n", iErrorCode);
+    }
+    EndFileOperations();
+}

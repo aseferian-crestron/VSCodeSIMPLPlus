@@ -1,0 +1,10 @@
+#SYMBOL_NAME "Test_HexToSI"
+#DEFAULT_VOLATILE
+
+FUNCTION Main()
+{
+    SIGNED_INTEGER V1, V2;
+    V1 = HexToSI("FFFF");
+    V2 = HexToSI("AFFFB");
+    PRINT("V1=%d, V2=%d\n", V1, V2);
+}

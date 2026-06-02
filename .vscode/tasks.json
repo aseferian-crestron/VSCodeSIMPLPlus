@@ -1,0 +1,67 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "npm: compile",
+      "type": "shell",
+      "command": "npm run compile",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": { "reveal": "silent", "panel": "shared" },
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "npm: watch",
+      "type": "shell",
+      "command": "npm run watch",
+      "group": "build",
+      "isBackground": true,
+      "presentation": { "reveal": "silent", "panel": "shared" },
+      "problemMatcher": "$tsc-watch"
+    },
+    {
+      "label": "SIMPL+: Compile Current File",
+      "type": "shell",
+      "command": "C:\\Program Files (x86)\\Crestron\\Simpl\\SPlusCC.exe",
+      "args": ["\\build", "${file}", "\\target", "series3"],
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true },
+      "problemMatcher": {
+        "owner": "simplplus",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^\\[(.+)\\]\\s+(Error|Warning)\\s+\\d+\\s+\\(Line\\s+(\\d+)\\)\\s+-\\s+(.+)$",
+          "file": 1,
+          "severity": 2,
+          "line": 3,
+          "message": 4
+        }
+      }
+    },
+    {
+      "label": "SIMPL+: Run Test Suite",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-ExecutionPolicy", "Bypass",
+        "-File", "${workspaceFolder}\\scripts\\test-compile.ps1",
+        "-Path", "${workspaceFolder}\\test-suite"
+      ],
+      "group": { "kind": "test", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true },
+      "problemMatcher": {
+        "owner": "simplplus",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^\\[(.+)\\]\\s+(Error|Warning)\\s+\\d+\\s+\\(Line\\s+(\\d+)\\)\\s+-\\s+(.+)$",
+          "file": 1,
+          "severity": 2,
+          "line": 3,
+          "message": 4
+        }
+      }
+    }
+  ]
+}

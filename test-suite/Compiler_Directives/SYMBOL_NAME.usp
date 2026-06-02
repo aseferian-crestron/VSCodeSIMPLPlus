@@ -1,0 +1,10 @@
+#SYMBOL_NAME "Test_SYMBOL_NAME"
+#DEFAULT_VOLATILE
+#SYMBOL_NAME "SYMBOL_NAME"
+
+DIGITAL_INPUT _SKIP_,Test_DIn;
+
+PUSH Test_DIn
+{
+    Print("directive test\n");
+}

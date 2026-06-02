@@ -1,0 +1,10 @@
+#SYMBOL_NAME "Test_GetNumArrayRows"
+#DEFAULT_VOLATILE
+
+DIGITAL_INPUT TEST;
+INTEGER My_Array[10][20];
+
+PUSH TEST
+{
+PRINT("Rows = %d\n", GetNumArrayRows(My_Array));
+}

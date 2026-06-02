@@ -1,0 +1,14 @@
+#SYMBOL_NAME "Test_Print"
+#DEFAULT_VOLATILE
+
+INTEGER X;
+STRING Z[100];
+
+FUNCTION MAIN()
+{
+    X = 10;
+    Z = "Hello";
+    PRINT("This is a string\n");
+    PRINT("Value of X is %u decimal, %02X hex\n", X, X);
+    PRINT("String value is %s\n", Z);
+}

@@ -1,0 +1,10 @@
+#SYMBOL_NAME "Test_SETCLOCK"
+#DEFAULT_VOLATILE
+
+ANALOG_INPUT Hours, Minutes, Seconds;
+
+CHANGE Hours, Minutes, Seconds
+{
+SetClock(Hours, Minutes, Seconds);
+PRINT("Current Time is: %s\n", Time());
+}

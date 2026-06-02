@@ -1,0 +1,12 @@
+#SYMBOL_NAME "Test_CompareStrings"
+#DEFAULT_VOLATILE
+
+FUNCTION Main()
+{
+    STRING FirstString[100], SecondString[100];
+    SIGNED_INTEGER result;
+    FirstString = "ValueA";
+    SecondString = "Valueb";
+    result = CompareStrings(FirstString, SecondString);
+    PRINT("CompareStrings result: %d\n", result);
+}

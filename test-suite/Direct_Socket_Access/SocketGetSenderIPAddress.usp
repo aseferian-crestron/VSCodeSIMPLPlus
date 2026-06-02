@@ -1,0 +1,11 @@
+#SYMBOL_NAME "Test_SocketGetSenderIPAddress"
+#DEFAULT_VOLATILE
+
+UDP_SOCKET MyUDPSocket[1024];
+
+SOCKETRECEIVE MyUDPSocket
+{
+    STRING senderIP[50];
+    SocketGetSenderIPAddress(MyUDPSocket, senderIP);
+    Print("Received from: %s\n", senderIP);
+}

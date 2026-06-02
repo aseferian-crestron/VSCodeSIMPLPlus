@@ -1,0 +1,15 @@
+#SYMBOL_NAME "Test_ProcessLogic"
+#DEFAULT_VOLATILE
+
+ANALOG_OUTPUT I;
+
+FUNCTION Main()
+{
+    INTEGER X;
+    
+    FOR(X=0 TO 25)
+    {
+    I = X;
+    PROCESSLOGIC();
+    }
+}
