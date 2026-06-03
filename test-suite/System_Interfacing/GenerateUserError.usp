@@ -1,9 +1,0 @@
-#SYMBOL_NAME "Test_GenerateUserError"
-#DEFAULT_VOLATILE
-
-FUNCTION Main()
-{
-    STRING sError[100];
-    sError = "Projector";
-    GenerateUserError("The %s bulb has exceeded %d hours", sError, 1000);
-}

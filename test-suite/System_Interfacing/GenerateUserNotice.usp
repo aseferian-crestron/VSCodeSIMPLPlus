@@ -1,9 +1,0 @@
-#SYMBOL_NAME "Test_GenerateUserNotice"
-#DEFAULT_VOLATILE
-
-FUNCTION Main()
-{
-    STRING sNotice[100];
-    sNotice = "System";
-    GenerateUserNotice("The %s started successfully", sNotice);
-}

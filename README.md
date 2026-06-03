@@ -56,7 +56,7 @@ Commands are also available via **right-click → SIMPL+: Compile Current File**
 
 - **Visual Studio Code** 1.75 or later
 - **Crestron SIMPL Windows** installed (provides `SPlusCC.exe`)
-  - Default path: `C:\Program Files (x86)\Crestron\Simpl\SPlusCC.exe`
+  - The compiler is **auto-detected** from common install locations and the Windows registry, so it works no matter which directory SIMPL Windows was installed to. If it can't be found, the extension prompts you to locate `SPlusCC.exe` (and remembers your choice). You can also set `simplplus.compilerPath` manually.
 
 ---
 
@@ -86,7 +86,7 @@ Open VS Code settings (`Ctrl+,`) and search for **SIMPL+**:
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| `simplplus.compilerPath` | `C:\Program Files (x86)\Crestron\Simpl\SPlusCC.exe` | Path to SPlusCC.exe |
+| `simplplus.compilerPath` | _(blank — auto-detect)_ | Path to SPlusCC.exe. Leave blank to auto-detect from common install locations and the registry. |
 | `simplplus.compileTarget` | `series3` | Target series: `series2`, `series3`, or `series2 series3` |
 | `simplplus.compileOnSave` | `false` | Auto-compile on save |
 
@@ -101,58 +101,14 @@ Open VS Code settings (`Ctrl+,`) and search for **SIMPL+**:
 
 ---
 
-## Test Suite
+## Compiler Test Suite (separate)
 
-The `test-suite/` folder contains **253 `.usp` files** — one per SIMPL+ built-in function and language construct — automatically generated from the `Simpl+lr.chm` language reference and verified to compile without errors against a Series 3 target.
+The SIMPL+ compiler test suite (253 generated `.usp` files plus the generator and
+batch runner) is **not part of this extension** — it's a standalone testing effort kept
+in a sibling folder: **`../SIMPLPlusTests`** (`C:\ClaudeProjects\SIMPLPlusTests`).
 
-Tests are organized by category:
-
-```
-test-suite/
-├── Array_Operations/
-├── Bit_and_Byte_Functions/
-├── Branching_and_Decision_Constructs/
-├── Compiler_Directives/
-├── Data_Conversion_Functions/
-├── Declarations/
-├── Direct_Socket_Access/
-├── Encoding/
-├── Events/
-├── Exception_Handling/
-├── File_Functions/
-├── Looping_Constructs/
-├── Mathematical_Functions/
-├── Ramping_Functions/
-├── Random_Number_Functions/
-├── String_Formatting_and_Printing_Functions/
-├── String_Parsing_and_Manipulation_Functions/
-├── System_Control/
-├── System_Interfacing/
-├── Time_and_Date_Functions/
-└── Wait_Events/
-```
-
-### Running the test suite
-
-**From VS Code:** Command Palette → `SIMPL+: Run Test Suite`
-
-**From PowerShell:**
-```powershell
-.\scripts\test-compile.ps1 -Path test-suite -Target series3
-```
-
-### Regenerating the test suite
-If you have a newer version of SIMPL Windows installed:
-```powershell
-# 1. Extract the CHM language reference
-& "C:\Program Files\7-Zip\7z.exe" x "C:\Program Files (x86)\Crestron\Simpl\Simpl+lr.chm" -o"help-extracted" -y
-
-# 2. Parse all function definitions
-python scripts\parse-help.py
-
-# 3. Generate test files
-python scripts\generate-tests.py
-```
+It consumes this plugin's `scripts/function-db.json` to generate per-function tests.
+See that folder's own README for how to run/regenerate it.
 
 ---
 
@@ -161,17 +117,18 @@ python scripts\generate-tests.py
 ```
 VSCodeSIMPLPlus/
 ├── src/
-│   └── extension.ts          TypeScript extension entry point
+│   ├── extension.ts          Extension entry point + compiler integration
+│   ├── functionDb.ts         Loads function-db.json; hover/doc rendering
+│   ├── providers.ts          Hover, completion, signature help, go-to-definition, outline
+│   ├── symbols.ts            Scans user-declared symbols (I/O, vars, functions, …)
+│   └── compilerPath.ts       Auto-detects SPlusCC.exe (settings → install dirs → registry)
 ├── syntaxes/
 │   └── simplplus.tmLanguage.json   TextMate grammar
 ├── snippets/
 │   └── simplplus.json        Code snippets
 ├── scripts/
 │   ├── parse-help.py         Parses Simpl+lr.chm HTML → function-db.json
-│   ├── generate-tests.py     Generates test .usp files from function-db.json
-│   ├── test-compile.ps1      Batch test runner using SPlusCC.exe
-│   └── function-db.json      Parsed database of 305 SIMPL+ functions
-├── test-suite/               253 verified-compiling .usp test files
+│   └── function-db.json      Parsed database of 305 SIMPL+ functions (runtime asset)
 ├── sample/
 │   └── sample.usp            Example SIMPL+ module
 ├── language-configuration.json
@@ -184,7 +141,6 @@ VSCodeSIMPLPlus/
 ## Known Limitations
 
 - **Line numbers in errors** may be relative to the compiled function body rather than the absolute file line. Error messages and file links are always accurate.
-- The following categories are not included in the test suite as they require specific hardware or installed libraries: CIP/Cresnet signal routing functions, `#CRESTRON_LIBRARY` / `#USER_SIMPLSHARP_LIBRARY` directives, OEM join directives (Series-2 only), and GatherAsync callback patterns.
 
 ---
 

@@ -1,9 +1,0 @@
-#SYMBOL_NAME "Test_Low"
-#DEFAULT_VOLATILE
-
-ANALOG_INPUT VALUE;
-
-CHANGE VALUE
-{
-PRINT("The lower byte of %X is %X\n", VALUE, LOW(VALUE));
-}

@@ -39,29 +39,6 @@
           "message": 4
         }
       }
-    },
-    {
-      "label": "SIMPL+: Run Test Suite",
-      "type": "shell",
-      "command": "powershell",
-      "args": [
-        "-ExecutionPolicy", "Bypass",
-        "-File", "${workspaceFolder}\\scripts\\test-compile.ps1",
-        "-Path", "${workspaceFolder}\\test-suite"
-      ],
-      "group": { "kind": "test", "isDefault": true },
-      "presentation": { "reveal": "always", "panel": "shared", "clear": true },
-      "problemMatcher": {
-        "owner": "simplplus",
-        "fileLocation": "absolute",
-        "pattern": {
-          "regexp": "^\\[(.+)\\]\\s+(Error|Warning)\\s+\\d+\\s+\\(Line\\s+(\\d+)\\)\\s+-\\s+(.+)$",
-          "file": 1,
-          "severity": 2,
-          "line": 3,
-          "message": 4
-        }
-      }
     }
   ]
 }

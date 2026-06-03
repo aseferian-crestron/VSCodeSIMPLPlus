@@ -13,7 +13,6 @@ SPlsWork/
 *.ush
 
 # Build logs
-test-suite/.build/
 sample/.build/
 *.build.log
 

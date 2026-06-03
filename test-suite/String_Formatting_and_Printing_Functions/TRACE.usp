@@ -1,9 +1,0 @@
-#SYMBOL_NAME "Test_TRACE"
-#DEFAULT_VOLATILE
-
-FUNCTION Main()
-{
-    INTEGER x;
-    x = 42;
-    TRACE("Test value: %d\n", x);
-}

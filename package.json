@@ -46,11 +46,6 @@
         "command": "simplplus.compileAll",
         "title": "Compile All Files in Workspace",
         "category": "SIMPL+"
-      },
-      {
-        "command": "simplplus.runTests",
-        "title": "Run Test Suite (test-suite/)",
-        "category": "SIMPL+"
       }
     ],
     "menus": {
@@ -86,8 +81,8 @@
       "properties": {
         "simplplus.compilerPath": {
           "type": "string",
-          "default": "C:\\Program Files (x86)\\Crestron\\Simpl\\SPlusCC.exe",
-          "description": "Path to the Crestron SIMPL+ command-line compiler (SPlusCC.exe)"
+          "default": "",
+          "description": "Full path to the Crestron SIMPL+ command-line compiler (SPlusCC.exe). Leave blank to auto-detect from common install locations and the Windows registry (SIMPL Windows can be installed to any directory)."
         },
         "simplplus.compileTarget": {
           "type": "string",

@@ -2,6 +2,9 @@ import * as vscode from 'vscode';
 import * as cp from 'child_process';
 import * as path from 'path';
 import * as fs from 'fs';
+import { loadFunctionDb } from './functionDb';
+import { registerLanguageFeatures } from './providers';
+import { resolveCompilerPath, promptForCompiler } from './compilerPath';
 
 const DIAG_SOURCE = 'SIMPL+';
 // Matches: [filepath] Error 1001 (Line 9) - message
@@ -19,8 +22,11 @@ export function activate(context: vscode.ExtensionContext) {
         outputChannel,
         vscode.commands.registerCommand('simplplus.compile',    compileCurrentFile),
         vscode.commands.registerCommand('simplplus.compileAll', compileAllFiles),
-        vscode.commands.registerCommand('simplplus.runTests',   runTestSuite),
     );
+
+    // Language intelligence backed by the CHM-derived function database.
+    loadFunctionDb(context.extensionPath);
+    registerLanguageFeatures(context);
 }
 
 export function deactivate() {
@@ -49,50 +55,25 @@ async function compileAllFiles() {
     await runCompiler(uris.map(u => u.fsPath));
 }
 
-async function runTestSuite() {
-    const wsFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-    if (!wsFolder) {
-        vscode.window.showWarningMessage('Open a workspace folder first.');
-        return;
-    }
-    const testDir = path.join(wsFolder, 'test-suite');
-    if (!fs.existsSync(testDir)) {
-        vscode.window.showWarningMessage(`test-suite folder not found: ${testDir}`);
-        return;
-    }
-    const files: string[] = [];
-    collectUsp(testDir, files);
-    if (files.length === 0) {
-        vscode.window.showWarningMessage('No .usp files found in test-suite/.');
-        return;
-    }
-    vscode.window.showInformationMessage(`Running SIMPL+ test suite: ${files.length} files…`);
-    await runCompiler(files, true);
-}
-
 // ---- core compiler invocation -----------------------------------------------
 
-async function runCompiler(files: string[], isBatch = false) {
-    const config      = vscode.workspace.getConfiguration('simplplus');
-    const compilerPath: string = config.get('compilerPath', defaultCompilerPath());
-    const target: string       = config.get('compileTarget', 'series3');
+async function runCompiler(files: string[]) {
+    const config            = vscode.workspace.getConfiguration('simplplus');
+    const target: string    = config.get('compileTarget', 'series3');
 
-    if (!fs.existsSync(compilerPath)) {
-        const pick = await vscode.window.showErrorMessage(
-            `SIMPL+ compiler not found at:\n${compilerPath}`,
-            'Open Settings'
-        );
-        if (pick) { vscode.commands.executeCommand('workbench.action.openSettings', 'simplplus.compilerPath'); }
-        return;
+    let compilerPath = await resolveCompilerPath();
+    if (!compilerPath || !fs.existsSync(compilerPath)) {
+        compilerPath = await promptForCompiler(compilerPath);
+        if (!compilerPath || !fs.existsSync(compilerPath)) { return; }
     }
 
     diagnostics.clear();
     outputChannel.clear();
     outputChannel.show(true);
 
-    const label = isBatch
-        ? `SIMPL+ test suite (${files.length} files)`
-        : `Compiling ${path.basename(files[0])}`;
+    const label = files.length === 1
+        ? `Compiling ${path.basename(files[0])}`
+        : `Compiling ${files.length} SIMPL+ files`;
 
     await vscode.window.withProgress(
         { location: vscode.ProgressLocation.Notification, title: label, cancellable: false },
@@ -195,17 +176,3 @@ function spawnCompiler(
 
 // ---- helpers ----------------------------------------------------------------
 
-function defaultCompilerPath(): string {
-    return 'C:\\Program Files (x86)\\Crestron\\Simpl\\SPlusCC.exe';
-}
-
-function collectUsp(dir: string, results: string[]) {
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-        const full = path.join(dir, entry.name);
-        if (entry.isDirectory()) {
-            collectUsp(full, results);
-        } else if (entry.name.toLowerCase().endsWith('.usp')) {
-            results.push(full);
-        }
-    }
-}
