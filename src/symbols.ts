@@ -31,7 +31,7 @@ for (const t of VAR_TYPES)   { KIND_BY_TYPE.set(t, vscode.SymbolKind.Variable); 
 // Order matters: parameters/IO before plain var types (they share the INTEGER/STRING roots).
 const ALL_DECL_TYPES = [...IO_TYPES, ...PARAM_TYPES, ...VAR_TYPES];
 
-const DECL_RE   = new RegExp(`^(\\s*(${ALL_DECL_TYPES.join('|')})\\b\\s+)([^;{]+);`);
+const DECL_RE   = new RegExp(`^(\\s*(${ALL_DECL_TYPES.join('|')})\\b\\s+)([^;{]+);`, 'i');
 const FUNC_RE   = /^(\s*(?:CALLBACK\s+)?\w*FUNCTION\s+)([A-Za-z_]\w*)\s*\(/i;
 const STRUCT_RE = /^(\s*STRUCTURE\s+)([A-Za-z_]\w*)/i;
 const CONST_RE  = /^(\s*#DEFINE_CONSTANT\s+)([A-Za-z_]\w*)/i;

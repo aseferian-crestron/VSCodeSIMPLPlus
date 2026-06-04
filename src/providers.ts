@@ -30,8 +30,8 @@ class SimplHoverProvider implements vscode.HoverProvider {
 // ---- completion -------------------------------------------------------------
 
 class SimplCompletionProvider implements vscode.CompletionItemProvider {
-    provideCompletionItems(): vscode.ProviderResult<vscode.CompletionItem[]> {
-        return allFunctions().map(fn => {
+    provideCompletionItems(doc: vscode.TextDocument): vscode.ProviderResult<vscode.CompletionItem[]> {
+        const items = allFunctions().map(fn => {
             const item = new vscode.CompletionItem(fn.name, kindFor(fn));
             item.detail = fn.category || 'SIMPL+';
             item.documentation = buildDocs(fn);
@@ -41,6 +41,32 @@ class SimplCompletionProvider implements vscode.CompletionItemProvider {
             }
             return item;
         });
+
+        // Add the user's own declarations (variables, constants, I/O, params, functions,
+        // structures) found in the current file. Dedupe by name — scanSymbols may report
+        // the same identifier more than once (e.g. comma-separated declarations).
+        const seen = new Set<string>();
+        for (const s of scanSymbols(doc)) {
+            const key = s.name.toLowerCase();
+            if (seen.has(key)) { continue; }
+            seen.add(key);
+            const item = new vscode.CompletionItem(s.name, completionKindFor(s.kind));
+            item.detail = s.detail;
+            items.push(item);
+        }
+        return items;
+    }
+}
+
+/** Map an outline SymbolKind to the matching CompletionItemKind. */
+function completionKindFor(kind: vscode.SymbolKind): vscode.CompletionItemKind {
+    switch (kind) {
+        case vscode.SymbolKind.Field:    return vscode.CompletionItemKind.Field;
+        case vscode.SymbolKind.Property: return vscode.CompletionItemKind.Property;
+        case vscode.SymbolKind.Function: return vscode.CompletionItemKind.Function;
+        case vscode.SymbolKind.Struct:   return vscode.CompletionItemKind.Struct;
+        case vscode.SymbolKind.Constant: return vscode.CompletionItemKind.Constant;
+        default:                         return vscode.CompletionItemKind.Variable;
     }
 }
 
