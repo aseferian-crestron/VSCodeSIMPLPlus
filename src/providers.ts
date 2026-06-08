@@ -4,8 +4,11 @@ import { scanSymbols, UserSymbol } from './symbols';
 
 const SELECTOR: vscode.DocumentSelector = { language: 'simplplus' };
 
+let log: vscode.OutputChannel | undefined;
+
 /** Register all language-feature providers. */
-export function registerLanguageFeatures(context: vscode.ExtensionContext) {
+export function registerLanguageFeatures(context: vscode.ExtensionContext, channel?: vscode.OutputChannel) {
+    log = channel;
     context.subscriptions.push(
         vscode.languages.registerHoverProvider(SELECTOR, new SimplHoverProvider()),
         vscode.languages.registerCompletionItemProvider(SELECTOR, new SimplCompletionProvider()),
@@ -181,7 +184,14 @@ class SimplDefinitionProvider implements vscode.DefinitionProvider {
 
 class SimplDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
     provideDocumentSymbols(doc: vscode.TextDocument): vscode.ProviderResult<vscode.DocumentSymbol[]> {
-        return scanSymbols(doc).map((s: UserSymbol) =>
-            new vscode.DocumentSymbol(s.name, s.detail, s.kind, s.fullRange, s.nameRange));
+        try {
+            const found = scanSymbols(doc);
+            log?.appendLine(`[SIMPL+] @ symbol scan: lang=${doc.languageId}, file=${doc.uri.fsPath}, found ${found.length} symbols${found.length ? ': ' + found.map(s => s.name).join(', ') : ''}`);
+            return found.map((s: UserSymbol) =>
+                new vscode.DocumentSymbol(s.name, s.detail, s.kind, s.fullRange, s.nameRange));
+        } catch (err) {
+            log?.appendLine(`[SIMPL+] @ symbol scan FAILED: ${err}`);
+            return [];
+        }
     }
 }

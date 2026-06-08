@@ -63,7 +63,7 @@
     },
     "function-types": {
       "name": "storage.type.function.simplplus",
-      "match": "(?i)\\b(PUSH|RELEASE|CHANGE|EVENT|FUNCTION|THREADSAFE|EVENTHANDLER|SOCKETRECEIVE|SOCKETSTATUS)\\b"
+      "match": "(?i)\\b(PUSH|RELEASE|CHANGE|EVENT|SIGNED_LONG_INTEGER_FUNCTION|LONG_INTEGER_FUNCTION|SIGNED_INTEGER_FUNCTION|INTEGER_FUNCTION|STRING_FUNCTION|FUNCTION|CALLBACK|THREADSAFE|EVENTHANDLER|SOCKETRECEIVE|SOCKETSTATUS)\\b"
     },
     "control-keywords": {
       "name": "keyword.control.simplplus",

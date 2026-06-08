@@ -16,6 +16,17 @@ Complete TextMate grammar covering the entire SIMPL+ language:
 - Built-in functions (`Print`, `MakeString`, `Left`, `Gather`, `SocketConnect`, etc.)
 - Comments (`//` and `/* */`), strings, numbers, and operators
 
+### Language Intelligence
+Editor smarts backed by a database of 305 SIMPL+ functions (parsed from the CHM language reference) plus a scan of the symbols you declare in the current file:
+
+- **Hover** — documentation, syntax, return value, and examples for built-in functions.
+- **Auto-completion** (`Ctrl+Space`) — all built-in functions/keywords *plus* your own declared variables, I/O, parameters, constants, functions, and structures. Functions insert a call snippet.
+- **Signature help** — parameter hints as you type inside `(` `)`, with one overload per documented syntax line.
+- **Go to Definition** (`F12`) — jump to where a user symbol is declared.
+- **Go to Symbol / Outline** — press **`Ctrl+Shift+O`** (or type **`@`** in Quick Open) to list every symbol you've declared in the file: functions, I/O, variables, parameters, constants, and structures. Also drives the **Outline** view and breadcrumbs.
+
+When the extension is loaded you'll see a **✓ SIMPL+** badge in the status bar (click it to open the SIMPL+ log). On activation it also shows a brief "extension is active" notification.
+
 ### Code Snippets
 30+ snippets for common SIMPL+ patterns. Type a prefix and press `Tab`:
 
@@ -70,7 +81,12 @@ Commands are also available via **right-click → SIMPL+: Compile Current File**
 ### Sideload for development
 1. Clone this repository
 2. Run `npm install`
-3. Open the folder in VS Code and press `F5` — a new Extension Development Host window opens with the extension active
+3. Open the folder in VS Code and press `F5`. This runs the `npm: compile` pre-launch task (`tsc`) and opens a new **Extension Development Host** window with the extension loaded.
+4. In that host window, open a `.usp`/`.ush` file. On activation you'll see a **✓ SIMPL+** badge in the status bar and an "extension is active" notification.
+
+**Notes:**
+- The included `.vscode/launch.json` passes `--disable-extensions`, so the dev host runs **only** this extension. This is intentional: another installed extension that also claims `.usp` (e.g. a "Crestron Components" extension) would otherwise own the file's language and disable this extension's `@` outline, hover, and completion. See [Troubleshooting](#troubleshooting) if those features don't appear.
+- After editing files in `src/`, re-run the compile (`npm run compile`, or rely on the F5 pre-launch task) and reload the dev host (**Developer: Reload Window**) to pick up changes.
 
 ### Copy to extensions folder
 ```powershell
@@ -138,9 +154,22 @@ VSCodeSIMPLPlus/
 
 ---
 
+## Troubleshooting
+
+### `@` (Go to Symbol) / Outline shows nothing, hover & completion don't fire
+The language features only run when VS Code identifies the file as the `simplplus` language. The usual cause is **another installed extension claiming `.usp`** (e.g. a separate "Crestron Components" extension). When two extensions register `.usp`, VS Code assigns the file to only one language ID — and the status bar may still *display* "SIMPL+" even though it's the other extension's language.
+
+- **While developing:** the included launch config (`.vscode/launch.json`) passes `--disable-extensions`, so the Extension Development Host runs **only** this extension and owns `.usp`. Press `F5` and the `@` outline, hover, etc. will work.
+- **When installed normally:** disable or uninstall the conflicting extension so this one owns `.usp`, or change the file association (`Ctrl+Shift+P` → **Change Language Mode** → **Configure File Association for '.usp'**).
+- **To verify which language owns the file:** open the **SIMPL+** Output panel (click the **✓ SIMPL+** status-bar badge). Pressing `@` logs a line showing the file's actual `languageId` and the symbols found.
+
+---
+
 ## Known Limitations
 
 - **Line numbers in errors** may be relative to the compiled function body rather than the absolute file line. Error messages and file links are always accurate.
+- **Wrapped multi-line declarations** aren't picked up by the outline / go-to-definition. An I/O or variable declaration whose terminating `;` is on a later line than the type keyword (e.g. `DIGITAL_INPUT a,` then more names below, `;` several lines down) is skipped by the symbol scanner. Functions, constants, and single-line declarations are unaffected.
+- **Event handlers** (`PUSH`, `RELEASE`, `CHANGE`, `EVENT`, `THREADSAFE`) are not listed in the `@` outline.
 
 ---
 

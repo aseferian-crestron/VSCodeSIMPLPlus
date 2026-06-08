@@ -12,26 +12,42 @@ const ERROR_RE = /^\[(.+?)\]\s+(Error|Warning)\s+\d+\s+\(Line\s+(\d+)\)\s+-\s+(.
 
 let diagnostics: vscode.DiagnosticCollection;
 let outputChannel: vscode.OutputChannel;
+let statusItem: vscode.StatusBarItem;
 
 export function activate(context: vscode.ExtensionContext) {
     diagnostics    = vscode.languages.createDiagnosticCollection(DIAG_SOURCE);
     outputChannel  = vscode.window.createOutputChannel('SIMPL+');
 
+    // Permanent status-bar badge so it's always obvious the extension is loaded.
+    statusItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+    statusItem.text = '$(check) SIMPL+';
+    statusItem.tooltip = 'VSCodeSIMPL+ extension is active. Click to open its log.';
+    statusItem.command = 'simplplus.showLog';
+    statusItem.show();
+
     context.subscriptions.push(
         diagnostics,
         outputChannel,
+        statusItem,
         vscode.commands.registerCommand('simplplus.compile',    compileCurrentFile),
         vscode.commands.registerCommand('simplplus.compileAll', compileAllFiles),
+        vscode.commands.registerCommand('simplplus.showLog',    () => outputChannel.show(true)),
     );
 
     // Language intelligence backed by the CHM-derived function database.
     loadFunctionDb(context.extensionPath);
-    registerLanguageFeatures(context);
+    registerLanguageFeatures(context, outputChannel);
+
+    outputChannel.appendLine('[SIMPL+] VSCodeSIMPL+ extension activated — language features registered.');
+    outputChannel.show(true);
+    vscode.window.showInformationMessage('VSCodeSIMPL+ extension is active ✓');
+    console.log('[SIMPL+] extension activated — language features registered');
 }
 
 export function deactivate() {
     diagnostics.dispose();
     outputChannel.dispose();
+    statusItem.dispose();
 }
 
 // ---- command handlers -------------------------------------------------------
