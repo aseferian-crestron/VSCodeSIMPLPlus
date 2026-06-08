@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { allFunctions, lookup, buildDocs, SimplFunction } from './functionDb';
-import { scanSymbols, UserSymbol } from './symbols';
+import { scanSymbols, scanUserFunctions, UserSymbol, UserFunction } from './symbols';
 
 const SELECTOR: vscode.DocumentSelector = { language: 'simplplus' };
 
@@ -24,10 +24,24 @@ class SimplHoverProvider implements vscode.HoverProvider {
     provideHover(doc: vscode.TextDocument, pos: vscode.Position): vscode.ProviderResult<vscode.Hover> {
         const range = doc.getWordRangeAtPosition(pos);
         if (!range) { return; }
-        const fn = lookup(doc.getText(range));
-        if (!fn) { return; }
-        return new vscode.Hover(buildDocs(fn), range);
+        const word = doc.getText(range);
+
+        // Prefer the built-in function database.
+        const fn = lookup(word);
+        if (fn) { return new vscode.Hover(buildDocs(fn), range); }
+
+        // Fall back to a function the user declared in this file.
+        const uf = scanUserFunctions(doc).find(f => f.name.toLowerCase() === word.toLowerCase());
+        if (uf) { return new vscode.Hover(buildUserFunctionDocs(uf), range); }
     }
+}
+
+/** Build a hover/documentation block for a user-declared function. */
+function buildUserFunctionDocs(uf: UserFunction): vscode.MarkdownString {
+    const md = new vscode.MarkdownString();
+    md.appendMarkdown(`**${uf.name}**  —  *user function*\n\n`);
+    md.appendCodeblock(uf.signature, 'simplplus');
+    return md;
 }
 
 // ---- completion -------------------------------------------------------------
@@ -69,6 +83,7 @@ function completionKindFor(kind: vscode.SymbolKind): vscode.CompletionItemKind {
         case vscode.SymbolKind.Function: return vscode.CompletionItemKind.Function;
         case vscode.SymbolKind.Struct:   return vscode.CompletionItemKind.Struct;
         case vscode.SymbolKind.Constant: return vscode.CompletionItemKind.Constant;
+        case vscode.SymbolKind.Event:    return vscode.CompletionItemKind.Event;
         default:                         return vscode.CompletionItemKind.Variable;
     }
 }
@@ -93,22 +108,33 @@ class SimplSignatureProvider implements vscode.SignatureHelpProvider {
     ): vscode.ProviderResult<vscode.SignatureHelp> {
         const fnName = functionCallName(doc, pos);
         if (!fnName) { return; }
-        const fn = lookup(fnName);
-        if (!fn || !fn.syntax) { return; }
 
         const help = new vscode.SignatureHelp();
-        // Each line of the syntax block is a separate overload.
-        help.signatures = fn.syntax.split('\n')
-            .map(s => s.trim())
-            .filter(Boolean)
-            .map(line => {
-                const sig = new vscode.SignatureInformation(line);
-                if (fn.description) {
-                    sig.documentation = new vscode.MarkdownString(fn.description.trim());
-                }
-                sig.parameters = parseParams(line).map(p => new vscode.ParameterInformation(p));
-                return sig;
-            });
+        const fn = lookup(fnName);
+
+        if (fn && fn.syntax) {
+            // Built-in function: each line of the syntax block is a separate overload.
+            help.signatures = fn.syntax.split('\n')
+                .map(s => s.trim())
+                .filter(Boolean)
+                .map(line => {
+                    const sig = new vscode.SignatureInformation(line);
+                    if (fn.description) {
+                        sig.documentation = new vscode.MarkdownString(fn.description.trim());
+                    }
+                    sig.parameters = parseParams(line).map(p => new vscode.ParameterInformation(p));
+                    return sig;
+                });
+        } else {
+            // Fall back to a function the user declared in this file.
+            const uf = scanUserFunctions(doc).find(f => f.name.toLowerCase() === fnName.toLowerCase());
+            if (!uf) { return; }
+            const sig = new vscode.SignatureInformation(uf.signature);
+            sig.parameters = uf.params.map(p => new vscode.ParameterInformation(p));
+            help.signatures = [sig];
+        }
+
+        if (help.signatures.length === 0) { return; }
         help.activeSignature = 0;
         help.activeParameter = Math.min(commaDepth(doc, pos), Math.max(0, signatureParamCount(help) - 1));
         return help;

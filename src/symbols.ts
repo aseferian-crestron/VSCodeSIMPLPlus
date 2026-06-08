@@ -9,6 +9,15 @@ export interface UserSymbol {
     fullRange: vscode.Range;         // range of the whole declaration line
 }
 
+/** A function declared by the user, with its parsed signature. */
+export interface UserFunction {
+    name: string;
+    returnType: string;              // e.g. "INTEGER_FUNCTION", "FUNCTION", "STRING_FUNCTION"
+    params: string[];                // each parameter's declaration text, e.g. "INTEGER iSource"
+    signature: string;              // reconstructed, e.g. "INTEGER_FUNCTION Foo(INTEGER iSource)"
+    line: number;                    // 0-based line of the declaration
+}
+
 // Declaration keywords grouped by purpose. Longest-first within each group so the
 // big alternation never matches a prefix of a longer keyword.
 const IO_TYPES = [
@@ -22,6 +31,8 @@ const PARAM_TYPES = [
 const VAR_TYPES = [
     'SIGNED_LONG_INTEGER', 'LONG_INTEGER', 'SIGNED_INTEGER', 'INTEGER', 'STRING', 'REAL',
 ];
+// Event-handler keywords that take a signal name (optionally prefixed with THREADSAFE).
+const EVENT_TYPES = ['PUSH', 'RELEASE', 'CHANGE'];
 
 const KIND_BY_TYPE = new Map<string, vscode.SymbolKind>();
 for (const t of IO_TYPES)    { KIND_BY_TYPE.set(t, vscode.SymbolKind.Field); }
@@ -33,8 +44,11 @@ const ALL_DECL_TYPES = [...IO_TYPES, ...PARAM_TYPES, ...VAR_TYPES];
 
 const DECL_RE   = new RegExp(`^(\\s*(${ALL_DECL_TYPES.join('|')})\\b\\s+)([^;{]+);`, 'i');
 const FUNC_RE   = /^(\s*(?:CALLBACK\s+)?\w*FUNCTION\s+)([A-Za-z_]\w*)\s*\(/i;
+// Like FUNC_RE but also captures the return-type keyword and the (single-line) parameter list.
+const FUNC_SIG_RE = /^\s*((?:CALLBACK\s+)?\w*FUNCTION)\s+([A-Za-z_]\w*)\s*\(([^)]*)\)/i;
 const STRUCT_RE = /^(\s*STRUCTURE\s+)([A-Za-z_]\w*)/i;
 const CONST_RE  = /^(\s*#DEFINE_CONSTANT\s+)([A-Za-z_]\w*)/i;
+const EVENT_RE  = new RegExp(`^(\\s*(?:THREADSAFE\\s+)?(${EVENT_TYPES.join('|')})\\s+)([A-Za-z_]\\w*)`, 'i');
 const IDENT_RE  = /[A-Za-z_]\w*/g;
 
 // Generic `Type names;` line — only treated as a declaration when the leading
@@ -74,6 +88,12 @@ export function scanSymbols(doc: vscode.TextDocument): UserSymbol[] {
             push(symbols, cm[2], '#DEFINE_CONSTANT', vscode.SymbolKind.Constant, lineNo, cm[1].length, fullRange);
             continue;
         }
+        // Event handlers: (THREADSAFE) PUSH / RELEASE / CHANGE <signal>.
+        const em = masked.match(EVENT_RE);
+        if (em) {
+            push(symbols, em[3], `${em[2].toUpperCase()} handler`, vscode.SymbolKind.Event, lineNo, em[1].length, fullRange);
+            continue;
+        }
         // I/O, parameter and variable declarations (possibly comma-separated).
         const dm = masked.match(DECL_RE);
         if (dm) {
@@ -90,6 +110,32 @@ export function scanSymbols(doc: vscode.TextDocument): UserSymbol[] {
         }
     }
     return symbols;
+}
+
+/**
+ * Scan a document for user-declared functions, parsing each declaration's return type
+ * and (single-line) parameter list. Used to power hover and signature help for the user's
+ * own functions — declarations whose parameter list wraps across lines are skipped.
+ */
+export function scanUserFunctions(doc: vscode.TextDocument): UserFunction[] {
+    const out: UserFunction[] = [];
+    let inBlockComment = false;
+
+    for (let lineNo = 0; lineNo < doc.lineCount; lineNo++) {
+        const { masked, inBlock } = maskComments(doc.lineAt(lineNo).text, inBlockComment);
+        inBlockComment = inBlock;
+
+        const m = masked.match(FUNC_SIG_RE);
+        if (!m) { continue; }
+
+        const returnType = m[1].replace(/\s+/g, ' ').toUpperCase();
+        const name = m[2];
+        const params = m[3].trim()
+            ? m[3].split(',').map(p => p.trim()).filter(Boolean)
+            : [];
+        out.push({ name, returnType, params, signature: `${returnType} ${name}(${params.join(', ')})`, line: lineNo });
+    }
+    return out;
 }
 
 /** Capture each comma-separated identifier in a declaration's names list. */

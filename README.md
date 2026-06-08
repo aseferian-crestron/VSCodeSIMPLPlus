@@ -19,11 +19,11 @@ Complete TextMate grammar covering the entire SIMPL+ language:
 ### Language Intelligence
 Editor smarts backed by a database of 305 SIMPL+ functions (parsed from the CHM language reference) plus a scan of the symbols you declare in the current file:
 
-- **Hover** — documentation, syntax, return value, and examples for built-in functions.
+- **Hover** — documentation, syntax, return value, and examples for built-in functions; for functions you declare in the file, the parsed signature (return type + parameters).
 - **Auto-completion** (`Ctrl+Space`) — all built-in functions/keywords *plus* your own declared variables, I/O, parameters, constants, functions, and structures. Functions insert a call snippet.
-- **Signature help** — parameter hints as you type inside `(` `)`, with one overload per documented syntax line.
+- **Signature help** — parameter hints as you type inside `(` `)`, with one overload per documented syntax line for built-ins, and the parsed signature for your own declared functions.
 - **Go to Definition** (`F12`) — jump to where a user symbol is declared.
-- **Go to Symbol / Outline** — press **`Ctrl+Shift+O`** (or type **`@`** in Quick Open) to list every symbol you've declared in the file: functions, I/O, variables, parameters, constants, and structures. Also drives the **Outline** view and breadcrumbs.
+- **Go to Symbol / Outline** — press **`Ctrl+Shift+O`** (or type **`@`** in Quick Open) to list every symbol you've declared in the file: functions, I/O, variables, parameters, constants, structures, and event handlers (`PUSH`/`RELEASE`/`CHANGE`). Also drives the **Outline** view and breadcrumbs.
 
 When the extension is loaded you'll see a **✓ SIMPL+** badge in the status bar (click it to open the SIMPL+ log). On activation it also shows a brief "extension is active" notification.
 
@@ -169,7 +169,6 @@ The language features only run when VS Code identifies the file as the `simplplu
 
 - **Line numbers in errors** may be relative to the compiled function body rather than the absolute file line. Error messages and file links are always accurate.
 - **Wrapped multi-line declarations** aren't picked up by the outline / go-to-definition. An I/O or variable declaration whose terminating `;` is on a later line than the type keyword (e.g. `DIGITAL_INPUT a,` then more names below, `;` several lines down) is skipped by the symbol scanner. Functions, constants, and single-line declarations are unaffected.
-- **Event handlers** (`PUSH`, `RELEASE`, `CHANGE`, `EVENT`, `THREADSAFE`) are not listed in the `@` outline.
 
 ---
 
