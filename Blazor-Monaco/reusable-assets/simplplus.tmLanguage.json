@@ -1,0 +1,133 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "SIMPL+",
+  "scopeName": "source.simplplus",
+  "fileTypes": ["usp", "ush"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#preprocessor" },
+    { "include": "#function-types" },
+    { "include": "#control-keywords" },
+    { "include": "#logical-operators" },
+    { "include": "#data-types" },
+    { "include": "#io-types" },
+    { "include": "#storage-modifiers" },
+    { "include": "#builtin-functions" },
+    { "include": "#constants" },
+    { "include": "#numbers" },
+    { "include": "#operators" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.simplplus",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.simplplus",
+          "begin": "/\\*",
+          "end": "\\*/",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.comment.begin.simplplus" }
+          },
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.comment.end.simplplus" }
+          }
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.simplplus",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.simplplus",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "preprocessor": {
+      "patterns": [
+        {
+          "name": "meta.preprocessor.simplplus keyword.control.preprocessor.simplplus",
+          "match": "(?i)\\s*(#(?:SYMBOL_NAME|DEFAULT_VOLATILE|DEFAULT_NONVOLATILE|ENABLE_STACK_CHECKING|ENABLE_DYNAMIC_MEMORY|CATEGORY|PRINT_TO_TRACE|USER_SIMPLSHARP_LIBRARY|CRESTRON_LIBRARY|DEFINE_CONSTANT|IF_DEFINED|IF_NOT_DEFINED|ENDIF|HELP_PDF_FILE|HINT|LARGE_STACK|HELP_BEGIN|HELP_END|OUTPUT_SHIFT|ANALOG_SERIAL_EXPAND|DIGITAL_EXPAND|DIGITAL_EXPAND_ONLY|DIGITAL_EXPAND_ONLY_AND_SEND_TO_SOURCES|OUTPUT_EXPAND|FIRST_INPUT_AS_TRIGGER|SERIES2|SERIES3|SERIES4|SERIES3_CPLD|SIMPLSharp_BINARY_OUTPUT|SIMPLSharp_BINARY_INPUT|USE_CATEGORY|DISCRETE_ANALOG_INPUTS|DISCRETE_ANALOG_OUTPUTS|USETRACE))\\b"
+        },
+        {
+          "name": "meta.preprocessor.simplplus keyword.control.preprocessor.simplplus",
+          "match": "#[A-Za-z_][A-Za-z0-9_]*"
+        }
+      ]
+    },
+    "function-types": {
+      "name": "storage.type.function.simplplus",
+      "match": "(?i)\\b(PUSH|RELEASE|CHANGE|EVENT|FUNCTION|THREADSAFE|EVENTHANDLER|SOCKETRECEIVE|SOCKETSTATUS)\\b"
+    },
+    "control-keywords": {
+      "name": "keyword.control.simplplus",
+      "match": "(?i)\\b(IF|ELSE|WHILE|FOR|DO|UNTIL|RETURN|BREAK|SWITCH|CASE|DEFAULT|TO|STEP|THEN|BEGIN|END)\\b"
+    },
+    "logical-operators": {
+      "name": "keyword.operator.word.simplplus",
+      "match": "(?i)\\b(AND|OR|NOT|XOR|MOD|BAND|BOR|BNOT|BXOR|BSHL|BSHR|LAND|LOR|LNOT)\\b"
+    },
+    "data-types": {
+      "name": "storage.type.simplplus",
+      "match": "(?i)\\b(INTEGER|STRING|LONG_INTEGER|SIGNED_INTEGER|SIGNED_LONG_INTEGER|SLONG|SINT|REAL|STRUCTURE|SIGNED_LONG_INTEGER_ARRAY|LONG_INTEGER_ARRAY|INTEGER_ARRAY|STRING_ARRAY|REAL_ARRAY)\\b"
+    },
+    "io-types": {
+      "name": "support.type.io.simplplus",
+      "match": "(?i)\\b(DIGITAL_INPUT|ANALOG_INPUT|STRING_INPUT|DIGITAL_OUTPUT|ANALOG_OUTPUT|STRING_OUTPUT|BUFFER_INPUT|DIGITAL_IN|ANALOG_IN|STRING_IN|DIGITAL_OUT|ANALOG_OUT|STRING_OUT)\\b"
+    },
+    "storage-modifiers": {
+      "name": "storage.modifier.simplplus",
+      "match": "(?i)\\b(VOLATILE|NONVOLATILE)\\b"
+    },
+    "builtin-functions": {
+      "name": "support.function.builtin.simplplus",
+      "match": "(?i)\\b(Print|MakeString|Left|Right|Mid|Len|Find|FindNoCase|Upper|Lower|Atoi|Atol|Atof|Atod|Itoa|Itohex|Htoi|SetString|ClearString|GetChar|SetChar|RemoveChar|Insert|Remove|Byte|Chr|Delay|Wait|CancelWait|CancelAllWait|Retimer|PauseTimer|ResumeTimer|Abs|Max|Min|Pow|Sqrt|Random|Randomize|Crc16|Crc32|GetLastModifiedArrayIndex|GetNumArrayCols|GetNumArrayRows|SetArray|ResizeArray|GetStringEncoding|SetStringEncoding|EthernetConnected|SocketConnect|SocketDisconnect|SocketSend|SocketStatus|File_Open|File_Close|File_Read|File_Write|File_Delete|File_Exists|Dir_Create|Dir_Delete|SetClock|GetClock|GetTime|GetTimeZoneOffset|ClockFunction|Pulse|SetArray|BoundedValue|HtoI|ItoH|TestForTrue|TestForFalse|Type_Check|IsSignedInteger|IsUnsignedInteger|IsString|IsReal|IsLong|CheckSignal|GenerateUserEvent|CompileError|RuntimeError|Trace|ErrorLog)\\b"
+    },
+    "constants": {
+      "name": "constant.language.simplplus",
+      "match": "(?i)\\b(TRUE|FALSE|ON|OFF|HIGH|LOW|ENABLE|DISABLE|MAXINT|MININT)\\b"
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.hex.simplplus",
+          "match": "\\b0[xX][0-9A-Fa-f]+\\b"
+        },
+        {
+          "name": "constant.numeric.float.simplplus",
+          "match": "\\b[0-9]+\\.[0-9]+\\b"
+        },
+        {
+          "name": "constant.numeric.integer.simplplus",
+          "match": "\\b[0-9]+\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.comparison.simplplus",
+          "match": "<>|<=|>=|<|>|="
+        },
+        {
+          "name": "keyword.operator.assignment.simplplus",
+          "match": ":="
+        },
+        {
+          "name": "keyword.operator.arithmetic.simplplus",
+          "match": "[+\\-*/%]"
+        },
+        {
+          "name": "keyword.operator.bitwise.simplplus",
+          "match": "<<|>>"
+        }
+      ]
+    }
+  }
+}

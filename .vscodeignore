@@ -1,0 +1,19 @@
+# Dev-only files — excluded from the packaged VSIX.
+# NOTE: out/ and scripts/function-db.json are REQUIRED at runtime — do not ignore them.
+
+.vscode/**
+.vscode-test/**
+src/**
+**/*.ts
+**/*.map
+tsconfig.json
+.gitignore
+.gitattributes
+
+# Design docs / reusable assets for the Blazor + Monaco port (not part of the extension)
+Blazor-Monaco/**
+
+# Reference material and examples not needed at runtime
+help-extracted/**
+sample/**
+scripts/parse-help.py
